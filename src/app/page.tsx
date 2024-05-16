@@ -1,3 +1,5 @@
+"use client";
+
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -9,7 +11,14 @@ import { Button } from "@mui/material";
 //data
 import { items } from "./utils/mock-Items";
 
+//redux
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/app/store";
+import { addToCart } from "@/app/store/reducers/shopping-cart.slice";
+
 export default function Home() {
+  const dispatch = useDispatch<AppDispatch>();
+  
   return (
     <main className="flex min-h-screen flex-row items-center justify-between p-24">
       <Grid container spacing={4}>
@@ -36,7 +45,11 @@ export default function Home() {
                 <Typography variant="h6" color="primary">
                   {item.price} Bath
                 </Typography>
-                <Button variant="outlined" startIcon={<AddShoppingCartIcon />}>
+                <Button
+                  variant="outlined"
+                  startIcon={<AddShoppingCartIcon />}
+                  onClick={() => dispatch(addToCart(item))}
+                >
                   Add to Cart
                 </Button>
               </CardContent>

@@ -11,7 +11,6 @@ const Footer = () => {
               variant="subtitle2"
               noWrap
               component="a"
-              href="#app-bar-with-responsive-menu"
               sx={{
                 mr: 5,
                 display: { xs: "none", md: "flex" },
