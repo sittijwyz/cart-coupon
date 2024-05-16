@@ -27,12 +27,32 @@ export const shoppingCartSlice = createSlice({
     },
     removeFromCart(state, action: PayloadAction<ItemType>) {
       const itemToRemove = action.payload;
-      state.items = state.items.filter((item) => item !== itemToRemove);
+      state.items = state.items.filter((item) => item.id !== itemToRemove.id);
+    },
+    increment(state, action: PayloadAction<ItemType>) {
+      const itemToIncrement = state.items.find(
+        (item) => item.id === action.payload.id
+      );
+      if (itemToIncrement) {
+        itemToIncrement.quantity += 1;
+      }
+    },
+    decrement(state, action: PayloadAction<ItemType>) {
+      const itemToDecrement = state.items.find(
+        (item) => item.id === action.payload.id
+      );
+      if (itemToDecrement) {
+        itemToDecrement.quantity -= 1;
+        if (itemToDecrement.quantity === 0) {
+          state.items = state.items.filter((item) => item.id !== itemToDecrement.id);
+        }
+      }
     },
   },
 });
 
-export const { addToCart, removeFromCart } = shoppingCartSlice.actions;
+export const { addToCart, removeFromCart, increment, decrement } =
+  shoppingCartSlice.actions;
 export const selectShoppingCartState = (state: RootState) =>
   state.shoppingCart.items;
 export default shoppingCartSlice.reducer;
