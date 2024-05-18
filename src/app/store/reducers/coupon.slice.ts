@@ -25,7 +25,7 @@ const couponSlice = createSlice({
       }
     },
     removeCoupon: (state, action: PayloadAction<string>) => {
-      console.log('removeeeeeeeeeeeeeeeee')
+      state.discount = 0; //reset ค่าใหม่ เพราะยังไง useCallback จะทำงานอยู่ดีใน shopping cart เนื่องจาก appliedCoupons เปลี่ยนแปลง
       state.appliedCoupons = state.appliedCoupons.filter(
         (c) => c.code !== action.payload
       );

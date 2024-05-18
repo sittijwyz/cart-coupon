@@ -36,10 +36,19 @@ interface ShoppingCartProps {
   toggleDrawer: () => void;
 }
 
+interface disCountBycouponType {
+  couponCode: string;
+  couponDiscount: number;
+}
+
 const ShoppingCart = (props: ShoppingCartProps) => {
   const { isDrawerOpen, toggleDrawer } = props;
   const [coupon, setCoupon] = useState<string | null>(null);
-  const [disCountBycoupon, setDisCountBycoupon] = useState<any>([])
+  const [disCountBycoupon, setDisCountBycoupon] = useState<
+    disCountBycouponType[]
+  >([]);
+
+  console.log("disCountBycoupon", disCountBycoupon);
 
   const { items, totalPrice } = useSelector(selectShoppingCartState);
   const { appliedCoupons, discount } = useSelector(selectCouponState);
@@ -51,27 +60,38 @@ const ShoppingCart = (props: ShoppingCartProps) => {
     }
   }, [coupon, dispatch]);
 
-  const handleRemoveCoupon = (couponCode:string) => {
-    if (couponCode) {
-      dispatch(removeCoupon(couponCode));
-      dispatch(decrementDiscount(55))
+  const handleRemoveCoupon = (couponCode: string) => {
+    const matchingCoupon = appliedCoupons.find(
+      (coupon) => coupon.code === couponCode
+    );
+
+    if (matchingCoupon) {
+      const matchingDiscount = disCountBycoupon.find(
+        (discount) => discount.couponCode === matchingCoupon.code
+      );
+
+      if (matchingDiscount) {
+        dispatch(removeCoupon(couponCode));
+        // dispatch(decrementDiscount(matchingDiscount.couponDiscount));
+      }
     }
-  }
+  };
 
   const calculateCouponDiscount = useCallback(() => {
     const user = users.find((user) => user.name === "Sittichai");
     if (user) {
-      const disc = calculateDiscount(appliedCoupons, items, user, totalPrice);
-      dispatch(incrementDiscount(disc));
-
-      appliedCoupons.forEach(element => {
-        setDisCountBycoupon({code:element.code,discount:disc})
-        
-      });
+      const { totalDiscount, couponDiscounts } = calculateDiscount(
+        appliedCoupons,
+        items,
+        user,
+        totalPrice
+      );
+      dispatch(incrementDiscount(totalDiscount));
+      setDisCountBycoupon(couponDiscounts);
     } else {
       console.log("ไม่พบผู้ใช้ชื่อ Sittichai");
     }
-  }, [appliedCoupons, totalPrice, dispatch]);
+  }, [appliedCoupons, totalPrice, dispatch, items]);
 
   useEffect(() => {
     calculateCouponDiscount();
@@ -263,8 +283,8 @@ const ShoppingCart = (props: ShoppingCartProps) => {
                         >
                           {coupon.code}{" "}
                           <Typography
-                          component="span"
-                          variant="subtitle2"
+                            component="span"
+                            variant="subtitle2"
                             sx={{ cursor: "pointer" }}
                             onClick={() => handleRemoveCoupon(coupon.code)}
                           >
