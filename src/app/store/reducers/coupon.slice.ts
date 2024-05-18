@@ -18,10 +18,23 @@ const couponSlice = createSlice({
   reducers: {
     applyCoupon: (state, action: PayloadAction<string>) => {
       const coupon = coupons.find((coupon) => coupon.code === action.payload);
-      if (coupon && !state.appliedCoupons.find((c) => c.code === coupon.code)) {
-        state.appliedCoupons.push(coupon);
+      if (coupon) {
+        // ถ้ายังไม่มีคูปองถูกใช้งาน หรือประเภทของคูปองนี้ตรงกับประเภทของคูปองที่ถูกใช้งานอยู่แล้ว
+        if (
+          state.appliedCoupons.length === 0 ||
+          state.appliedCoupons.every((c) => c.type === coupon.type)
+        ) {
+          // ตรวจสอบซ้ำว่าคูปองนี้ยังไม่ถูกใช้งาน
+          if (!state.appliedCoupons.find((c) => c.code === coupon.code)) {
+            state.appliedCoupons.push(coupon);
+          } else {
+            alert("คูปองถูกใช้งานแล้ว");
+          }
+        } else {
+          alert("คูปองคนละประเภท");
+        }
       } else {
-        // แสดงข้อความแจ้งเตือนว่ารหัสคูปองไม่ถูกต้อง หรือถูกใช้งานแล้ว
+        alert("ไม่พบคูปองในระบบ");
       }
     },
     removeCoupon: (state, action: PayloadAction<string>) => {
