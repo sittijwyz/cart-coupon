@@ -91,7 +91,7 @@ const ShoppingCart = (props: ShoppingCartProps) => {
     } else {
       console.log("ไม่พบผู้ใช้ชื่อ Sittichai");
     }
-  }, [appliedCoupons, totalPrice, dispatch, items]);
+  }, [appliedCoupons]);
 
   useEffect(() => {
     calculateCouponDiscount();
@@ -178,7 +178,7 @@ const ShoppingCart = (props: ShoppingCartProps) => {
                         sx={{ flexDirection: "column", alignItems: "center" }}
                       >
                         <Typography variant="h6" color="black">
-                          {item.quantity * item.price}
+                          {(item.quantity * item.price).toLocaleString("th-TH")}
                         </Typography>
                         <Grid display="flex">
                           <Button
@@ -257,6 +257,22 @@ const ShoppingCart = (props: ShoppingCartProps) => {
                         height: "3rem",
                         borderRadius: "5px 0px 0px 5px",
                       },
+                      "& .MuiOutlinedInput-root": {
+                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#bebebe",
+                        },
+                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#bebebe",
+                        },
+                        "&.Mui-focused": {
+                          backgroundColor: "white",
+                        },
+                      },
+                      "& .MuiInputLabel-root": {
+                        "&.Mui-focused": {
+                          color: "black",
+                        },
+                      },
                     }}
                   />
                   <Button
@@ -274,36 +290,61 @@ const ShoppingCart = (props: ShoppingCartProps) => {
                     Apply
                   </Button>
                   {appliedCoupons.length !== 0 && (
-                    <Box>
-                      {appliedCoupons.map((coupon) => (
-                        <Typography
-                          component="span"
-                          variant="subtitle2"
-                          key={coupon.code}
-                        >
-                          {coupon.code}{" "}
-                          <Typography
-                            component="span"
-                            variant="subtitle2"
-                            sx={{ cursor: "pointer" }}
-                            onClick={() => handleRemoveCoupon(coupon.code)}
-                          >
-                            x
-                          </Typography>
-                        </Typography>
-                      ))}
+                    <Box height="100%" ml={2} flex={1}>
+                      <Grid container flexDirection="column">
+                        {appliedCoupons.map((coupon) => (
+                          <Grid key={coupon.id} md={12} color="red">
+                            <Typography
+                              component="span"
+                              variant="subtitle2"
+                              fontSize={12}
+                              key={coupon.code}
+                            >
+                              {coupon.code}{" "}
+                              <Typography
+                                component="span"
+                                variant="subtitle2"
+                                fontSize={14}
+                                fontWeight={700}
+                                sx={{ cursor: "pointer" }}
+                                onClick={() => handleRemoveCoupon(coupon.code)}
+                              >
+                                x
+                              </Typography>
+                            </Typography>
+                          </Grid>
+                        ))}
+                      </Grid>
                     </Box>
                   )}
                 </Box>
                 <Typography variant="subtitle2">
-                  Subtotal : {totalPrice}{" "}
+                  Subtotal : ฿{totalPrice.toLocaleString("th-TH")}{" "}
                 </Typography>
-                <Typography variant="subtitle2">
-                  Discount : {discount}
+                <Typography variant="subtitle2" color="red">
+                  Discount : -฿{discount.toLocaleString("th-TH")}
                 </Typography>
-                <Typography variant="subtitle2">
-                  Total : {totalPrice - discount}
+                <Typography variant="subtitle2" fontSize={25} fontWeight={700}>
+                  Total : ฿{(totalPrice - discount).toLocaleString("th-TH")}
                 </Typography>
+                <Box display="flex" justifyContent="center">
+                  <Button
+                    variant="contained"
+                    sx={{
+                      justifySelf: "center",
+                      mt: "1rem",
+                      bgcolor: "black",
+                      width: "80%",
+                      height: "2.8rem",
+                      borderRadius: "8px",
+                      "&:hover": {
+                        backgroundColor: "#696969",
+                      },
+                    }}
+                  >
+                    Check out
+                  </Button>
+                </Box>
               </Box>
             </Grid>
           </Grid>

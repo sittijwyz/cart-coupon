@@ -10,4 +10,5 @@ export const coupons: CouponType[] = [
     //set 2 
     { id: 6, code: "DISC60", type: 1, value: 60 },
     { id: 7, code: "FLAT20", type: 2, value: 20 },
+    { id: 8, code: "DISC70", type: 1, value: 70 },
   ];

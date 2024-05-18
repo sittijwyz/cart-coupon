@@ -43,7 +43,7 @@ export default function Home() {
                   {item.description}
                 </Typography>
                 <Typography variant="h6" color="primary">
-                  {item.price} Bath
+                  ฿ {item.price.toLocaleString('th-TH')}
                 </Typography>
                 <Button
                   variant="outlined"
