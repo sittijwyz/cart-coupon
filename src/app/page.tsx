@@ -9,7 +9,7 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { Button } from "@mui/material";
 
 //data
-import { items } from "./utils/mock-Items";
+import { items } from "./mocks/mock-Items";
 
 //redux
 import { useDispatch, useSelector } from "react-redux";

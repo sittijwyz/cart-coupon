@@ -1,10 +1,12 @@
 // ** Toolkit imports
 import { configureStore } from '@reduxjs/toolkit'
 import shoppingCart from './reducers/shopping-cart.slice'
+import coupon from './reducers/coupon.slice'
 
 export const store = configureStore({
   reducer: {
-    shoppingCart:shoppingCart
+    shoppingCart:shoppingCart,
+    coupon:coupon
   },
 
 })
