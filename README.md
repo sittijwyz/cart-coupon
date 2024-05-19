@@ -1,4 +1,4 @@
-## Take-Home-Playtorium
+## Take Home Playtorium
 Applicant ID : A24051862
 Name : Sittichai Wanyuma
 
